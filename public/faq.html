@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azureal - FAQ</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class="faq-section" id="faqContent">
+        <h2>Frequently Asked Questions (FAQ)</h2>
+        <div class="faq-item">
+            <h3>What is Azureal?</h3>
+            <p>Azureal is a real-time audio chat application built using WebRTC and Socket.IO. It allows users to stream audio between two clients with a modern interface.</p>
+        </div>
+        <div class="faq-item">
+            <h3>How do I use Azureal?</h3>
+            <p>Open two browser tabs or devices, navigate to the app URL, and click "Connect & Start Audio" in both. Allow microphone access, and you can start chatting!</p>
+        </div>
+        <div class="faq-item">
+            <h3>Why isn't audio streaming?</h3>
+            <p>Ensure both clients are connected, microphone access is granted, and you're using a browser that supports WebRTC (e.g., Chrome, Firefox).</p>
+        </div>
+        <div class="faq-item">
+            <h3>Does Azureal work on mobile?</h3>
+            <p>Yes, Azureal is responsive and works on mobile devices. However, ensure you're using a secure connection (HTTPS) and a compatible browser.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Can I use Azureal without HTTPS?</h3>
+            <p>For local development, you can use `http://localhost`. In production, WebRTC requires HTTPS for security reasons.</p>
+        </div>
+    </section>
+    <script>
+        // Optional: Close button functionality if integrated with modal
+        document.querySelector('.close-btn')?.addEventListener('click', () => {
+            document.getElementById('faqContent').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

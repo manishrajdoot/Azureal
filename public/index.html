@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azureal - Audio Chat</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/components.css">
+    <link rel="stylesheet" href="/faq.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" type="image/png" href="/assets/icon.png" onerror="console.error('Favicon failed to load:', this.href);">
+</head>
+<body>
+    <!-- Loader (displayed for 5 seconds on startup) -->
+    <div class="loader-container" id="loader">
+        <div class="loader">
+            <svg viewBox="0 0 80 80">
+                <circle r="32" cy="40" cx="40" id="test"></circle>
+            </svg>
+        </div>
+        <div class="loader triangle">
+            <svg viewBox="0 0 86 80">
+                <polygon points="43 8 79 72 7 72"></polygon>
+            </svg>
+        </div>
+        <div class="loader">
+            <svg viewBox="0 0 80 80">
+                <rect height="64" width="64" y="8" x="8"></rect>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent" style="display: none;">
+        <div class="toggle-container">
+            <div class="checkbox-wrapper-41">
+                <input id="darkModeToggle" type="checkbox">
+            </div>
+        </div>
+
+        
+        <div class="tooltip-container" id="faqIcon">
+            <div class="icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="50"
+                    height="50"
+                >
+                    <path
+                        d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22c-5.518 0-10-4.482-10-10s4.482-10 10-10 10 4.482 10 10-4.482 10-10 10zm-1-16h2v6h-2zm0 8h2v2h-2z"
+                    ></path>
+                </svg>
+            </div>
+            <div class="tooltip">
+                <p>view FAQs</p>
+            </div>
+        </div>
+
+        <!-- App Container -->
+        <div class="app-container">
+            <img src="/assets/logo.png" alt="Azureal Logo" class="logo" onerror="console.error('Logo failed to load:', this.src); this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="logo-text" style="display: none;">Azureal</span>
+            <h1>Azureal Audio Chat</h1>
+            <div class="status-bar" id="statusBar">
+                <i class="fas fa-signal"></i> Status: connected
+            </div>
+            <div class="button-group">
+                <button id="connectButton">
+                    <i class="fas fa-play"></i> Connect & Start Audio
+                </button>
+            </div>
+            <audio id="remoteAudio" autoplay playsinline controls></audio>
+            <p class="error-message" id="errorMessage"></p>
+        </div>
+
+        <!-- Hidden FAQ Modal -->
+        <div id="faqModal" class="faq-modal" style="display: none;">
+            <div id="faqContent"></div>
+            <button class="close-btn">Close</button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>Developed by <a href="https://www.instagram.com/manish.rajdoot/" target="_blank">Manish Rajdoot</a> © 2025</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/script.js"></script>
+    <script>
+        // Show loader for 5 seconds, then display main content
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'flex';
+            }, 5000);
+        };
+
+        // Dark mode toggle functionality
+        const toggleSwitch = document.getElementById('darkModeToggle');
+        toggleSwitch.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+            if (!document.body.classList.contains('dark-mode')) {
+                document.body.style.background = `
+                    radial-gradient(circle at 100% 50%, #ff00cc 0% 2%, #00ffcc 3% 5%, transparent 6%),
+                    radial-gradient(circle at 0% 50%, #ff00cc 0% 2%, #00ffcc 3% 5%, transparent 6%),
+                    radial-gradient(ellipse at 50% 0%, #3300ff 0% 3%, transparent 4%) 10px 10px,
+                    radial-gradient(circle at 50% 50%, #00ffcc 0% 1%, #ff00cc 2% 3%, #3300ff 4% 5%, transparent 6%) 20px 20px,
+                    repeating-linear-gradient(45deg, #1a1a1a, #1a1a1a 10px, #242424 10px, #242424 20px)`;
+                document.body.style.backgroundSize = '50px 50px, 50px 50px, 40px 40px, 60px 60px, 100% 100%';
+                document.body.style.animation = 'shift 15s linear infinite';
+            } else {
+                document.body.style.background = '#121212';
+                document.body.style.backgroundSize = '100% 100%';
+                document.body.style.animation = 'none';
+            }
+        });
+
+        // Load FAQ content dynamically
+        async function loadFAQ() {
+            const response = await fetch('/faq.html');
+            const text = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'text/html');
+            const faqContent = doc.getElementById('faqContent');
+            document.getElementById('faqContent').innerHTML = faqContent.innerHTML;
+        }
+
+        // Show FAQ modal on icon click
+        document.getElementById('faqIcon').addEventListener('click', () => {
+            loadFAQ().then(() => {
+                document.getElementById('faqModal').style.display = 'block';
+            });
+        });
+
+        // Close FAQ modal
+        document.querySelector('.close-btn').addEventListener('click', () => {
+            document.getElementById('faqModal').style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            const modal = document.getElementById('faqModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

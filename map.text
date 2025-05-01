@@ -1,0 +1,11 @@
+C:\Users\MANISH RAJDOOT\Desktop\Azureal\
+├── public\
+│   ├── index.html
+│   ├── style.css         # General app styles
+│   ├── components.css    # Component-specific styles (loader, toggle, etc.)
+│   ├── faq.css           # FAQ-specific styles
+│   ├── script.js
+│   ├── faq.html
+├── server.js
+├── package.json
+├── package-lock.json
