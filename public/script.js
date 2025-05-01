@@ -22,7 +22,7 @@ function showError(message) {
 }
 
 function initializeSocket() {
-    socket = io('http://localhost:3001');
+socket = io('https://your-deployed-server-url.com');
 
     socket.on('connect', () => {
         updateStatus('Connected to signaling server');
