@@ -5,7 +5,7 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-    cors: { origin: "https://your-deployed-client-url.com", methods: ["GET", "POST"] }
+    cors: { origin: "http://localhost:3001", methods: ["GET", "POST"] }
 });
 
 const port = process.env.PORT || 3001;
