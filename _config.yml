@@ -1,0 +1,12 @@
+# Site settings
+title: Azureal
+description: Real-time audio chat application built using WebRTC and Socket.IO
+
+# GitHub Pages settings
+github:
+  is_project_page: false
+  private: false
+
+# Build settings
+markdown: kramdown
+theme: jekyll-theme-primer

@@ -22,7 +22,9 @@ function showError(message) {
 }
 
 function initializeSocket() {
-    socket = io('http://localhost:3001');
+    // डायनामिक URL - लोकल या प्रोडक्शन वातावरण के अनुसार कनेक्ट करेगा
+    const socketURL = window.location.hostname === 'localhost' ? 'http://localhost:3001' : window.location.origin;
+    socket = io(socketURL);
 
     socket.on('connect', () => {
         updateStatus('Connected to signaling server');

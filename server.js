@@ -5,7 +5,10 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-    cors: { origin: "http://localhost:3001", methods: ["GET", "POST"] }
+    cors: { 
+        origin: "*", // सभी डोमेन से कनेक्शन की अनुमति देता है
+        methods: ["GET", "POST"] 
+    }
 });
 
 const port = process.env.PORT || 3001;
